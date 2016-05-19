@@ -1,0 +1,160 @@
+.wrap{
+	margin:0 auto;
+	width:1024px;
+}
+body{
+	color: #333;
+	background-image:url(../images/bedge_grunge.png);
+	font-family: 'Anaheim', sans-serif;
+}
+/*
+.header{
+	background-image:url(../images/menu-bg.png);
+	height:3px;
+}*/
+.header span{
+	background-color:#C76572;
+	height:3px;
+	display:block;
+}
+
+.menu li{
+	display: inline-block;
+	margin:0 57px;
+}
+.menu li a{
+	display: block;
+	font-size:24px;
+	padding:60px 10px 10px 10px;
+	
+	color:#919191;
+	
+}
+.menu li:hover,.menu ul li.active{
+	background-color: #C76572;
+	height:110px;
+	-webkit-border-radius:0 0 5px 5px; 
+	-moz-border-radius:0 0 5px 5px; 
+}
+.menu li a:hover,.menu ul li.active a{
+	color:#fff;
+}
+/*
+.menu li a span:hover,.menu ul li.active a span{
+	background: url(../images/menu.png) no-repeat right top;
+}
+.menu li a:hover,.menu ul li.active a{
+	background: url(../images/menu_a.png) no-repeat left top;
+	height:50px;
+}
+*/
+.logo{
+	margin:48px 0 48px 0;
+	text-align:center;
+}
+.gallery{
+	padding-bottom:80px;
+}
+.gallery img{
+	float:left;
+	
+}
+.gallery img:hover{
+	opacity: 0.6;
+}
+.footer{
+	background-color:#251C15;
+	color:#D5D5D5;
+	padding:40px 0px;
+}
+
+.f-content .col1,.f-content .col2,.f-content .col3{
+	float:left;
+	width:318px;
+}
+.f-content .col1,.f-content .col2{
+	margin-right:35px;
+}
+.f-content h2{
+	font-size:24px;
+	color:#fff;
+	border-bottom: 2px dotted #333;
+	padding-bottom: 10px;
+}
+.f-content p{
+	padding:20px 0;
+	font-size: 16px
+}
+.col2 label{
+	display:block;
+	margin-bottom:5px;
+}
+.col2 input[type="text"] {
+	width: 270px;
+	padding: 5px;
+	background: #585252;
+	border: 1px solid #585252;
+	font-size: 12px;
+	margin-bottom: 20px;
+	outline: none;
+	color:#fff;
+}
+.social-icons img{
+	float:left;
+	margin-right:10px;
+}
+.col3-prev{
+}
+.prev{
+	background-color:#413B3B;
+	padding-bottom:5px;
+}
+.prev img{
+	padding:5px;
+}
+.prev span{
+	padding:0 5px 5px 5px;
+	
+}
+.copy{
+	text-align:center;
+	margin-top:15px;
+}
+.copy a{
+	color:#C76572;
+}
+.copy a:hover{
+	color:#fff;
+}
+.blog-content{
+	margin-bottom:30px;
+}
+.p-content .box{
+	margin-bottom:30px;
+}
+
+.p-content .box img {
+	float:left;
+	margin:0 20px 40px 0px;
+}
+.p-content .box h3{
+	font-size:24px;
+	color:#34AC98;
+	margin-bottom:20px;
+}
+.p-content .box p{
+	font-size:15px;
+}
+.paginate{
+	text-align:center;
+}
+.paginate li{
+	display: inline;
+	margin-right:15px;
+}
+.paginate li a{
+	color:#C76572;
+}
+.paginate li a:hover, .paginate ul li.current a {
+	color:#34AC98;
+}

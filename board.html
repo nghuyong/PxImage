@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)http://lacoooo.github.io/drawing-board/board.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
+  <title>Drawing</title>
+<link href="./board_files/jquery.colorpickersliders.css" rel="stylesheet" type="text/css" media="all"><style>
+  * {
+    font-family: "微软雅黑",arial,serif;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    background-color: rgba(0, 0, 40, 0.04);
+  }
+  canvas {
+    position: absolute;
+    cursor: default;
+    top: 0;
+    left: 0;
+    border-radius: 4px;
+  }
+  #canvas {
+    /*box-shadow: 0 0 10px 10px rgba(0, 0, 40, 0.01);*/
+    border: 1px solid rgba(0, 0, 0, 0.1);
+
+  }
+  #canvas_bg {
+    background: #fff;
+  }
+  .pen {
+    pointer-events:none;
+    cursor: default;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+  }
+  .tools {
+    width: 80%;
+    height: 200px;
+    background-color: #fff;
+    position: absolute;
+    bottom: -160px;
+    left: 50%;
+    transform: translate3d(-50%,0,0);
+    /*transform: translate3d(-50%,-100px,0);*/
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 30px 30px 0 0;
+    /*box-shadow: 0 0 10px 10px rgba(0, 0, 50, 0.05);*/
+    transition: all 0.4s ease;
+  }
+  .tools:hover {
+    transform: translate3d(-50%,-100px,0);
+    box-shadow: 0 6px 10px 10px rgba(0, 0, 50, 0.05);
+  }
+  .tools > div {
+    float: left;
+  }
+  .tools div {
+    opacity: 0;
+    transform: translate3d(0,10px,0);
+    -webkit-transform: translate3d(0,10px,0);
+    transition: opacity 0.5s ease, transform 0.4s ease 0.16s;
+    -webkit-transition: opacity 0.5s ease, transform 0.4s ease 0.16s;
+    -moz-transition: opacity 0.5s ease, transform 0.4s ease 0.16s;
+    -o-transition: opacity 0.5s ease, transform 0.4s ease 0.16s;
+    -ms-transition: opacity 0.5s ease, transform 0.4s ease 0.16s;
+  }
+  .tools:hover div {
+    opacity: 1;
+    transform: translate3d(0,0,0);
+    -webkit-transform: translate3d(0,0,0);
+  }
+  .cie {
+    margin-top: 20px;
+  }
+  .cp-sliders {
+    width: 200px;
+  }
+  .cp-slider {
+    height: 15px !important;
+  }
+  .cp-sliders .cp-preview{
+    display: none;
+  }
+  .cp-swatches {
+    width: 400px;
+    margin-top: -5px;
+    margin-left: 20px;
+  }
+  .color-preview {
+    width: 90px;
+    height: 90px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 100%;
+    margin: 20px;
+  }
+  .cp-container > div {
+    float: left;
+  }
+  .button {
+    width: 50px;
+    height: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 100%;
+    float:right !important;
+    margin: 20px;
+    margin-left: 0;
+    font-size: 28px;
+    text-align: center;
+    line-height: 50px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    background-color: #fff;
+  }
+  .button:hover {
+    box-shadow: 0 0 6px 6px rgba(0, 0, 80, 0.03);
+  }
+  .s {
+    line-height: 43px;
+  }
+  .add,.reduce {
+    line-height: 47px;
+    letter-spacing: 0;
+  }
+  .picker {
+    background-image: url(import/colorpicker.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 50%;
+  }
+  .cursor {
+    cursor: url('import/picker.ico'),default;
+  }
+</style></head>
+
+
+<body style="width: 1366px; height: 579px;">
+  <canvas id="canvas_bg" width="1264" height="480" style="top: 49.5px; left: 51px;"></canvas>
+  <canvas id="canvas" width="1264" height="480" style="top: 49.5px; left: 51px;"></canvas>
+  <div class="tools">
+    <div class="color-preview" style="background-color: rgb(218, 139, 163);">
+    </div>
+    <div class="cie">
+    <div class="cp-container"><div class="cp-sliders" style="color: rgb(255, 255, 255);"><div class="cp-slider cp-cielightness cp-transparency"><span style="background-image: linear-gradient(to right, rgb(4, 0, 0) 0%, rgb(67, 0, 31) 11.11%, rgb(96, 28, 54) 22.22%, rgb(125, 55, 80) 33.33%, rgb(156, 82, 106) 44.44%, rgb(187, 110, 134) 55.56%, rgb(218, 139, 163) 66.67%, rgb(251, 169, 193) 77.78%, rgb(255, 211, 224) 88.89%, rgb(255, 254, 255) 100%);"></span><div class="cp-marker" style="left: 65.8727%;"></div></div><div class="cp-slider cp-ciechroma cp-transparency"><span style="background-image: linear-gradient(to right, rgb(162, 162, 162) 0%, rgb(222, 137, 163) 25%, rgb(255, 111, 164) 50%, rgb(255, 111, 164) 75%, rgb(255, 111, 164) 100%);"></span><div class="cp-marker" style="left: 23.0946%;"></div></div><div class="cp-slider cp-ciehue cp-transparency"><span style="background-image: linear-gradient(to right, rgb(218, 139, 163) 0%, rgb(221, 139, 149) 3.7%, rgb(220, 141, 136) 7.41%, rgb(217, 144, 125) 11.11%, rgb(210, 147, 115) 14.81%, rgb(202, 152, 108) 18.52%, rgb(191, 157, 103) 22.22%, rgb(179, 161, 102) 25.93%, rgb(165, 165, 104) 29.63%, rgb(151, 169, 109) 33.33%, rgb(135, 172, 117) 37.04%, rgb(119, 175, 128) 40.74%, rgb(103, 176, 140) 44.44%, rgb(87, 178, 154) 48.15%, rgb(71, 178, 168) 51.85%, rgb(58, 178, 181) 55.56%, rgb(52, 177, 194) 59.26%, rgb(58, 175, 204) 62.96%, rgb(73, 173, 213) 66.67%, rgb(93, 170, 218) 70.37%, rgb(115, 166, 221) 74.07%, rgb(136, 161, 220) 77.78%, rgb(156, 157, 217) 81.48%, rgb(174, 152, 210) 85.19%, rgb(190, 147, 200) 88.89%, rgb(202, 143, 189) 92.59%, rgb(212, 140, 176) 96.3%, rgb(218, 139, 163) 100%);"></span><div class="cp-marker" style="left: 99.9834%;"></div></div><div class="cp-preview cp-transparency"><input type="text" readonly="readonly" style="color: rgb(255, 255, 255); background: rgb(218, 139, 163);"></div><div class="cp-slider cp-opacity cp-transparency"><span style="background-image: linear-gradient(to right, rgba(218, 139, 163, 0) 0%, rgb(218, 139, 163) 100%);"></span><div class="cp-marker" style="left: 100%;"></div></div></div><div class="cp-swatches"><button type="button" class="add" title="Add color to swatches" disabled=""></button><button type="button" class="remove" title="Remove color from swatches"></button><button type="button" class="reset" title="Reset to default swatches"></button><ul><li class="actual"><span style="background-color: rgb(218, 139, 163);"></span></li><li><span style="background-color: rgb(174, 156, 227);"></span></li><li><span style="background-color: rgb(29, 179, 229);"></span></li><li><span style="background-color: rgb(54, 185, 163);"></span></li><li><span style="background-color: rgb(144, 176, 105);"></span></li><li><span style="background-color: rgb(224, 148, 110);"></span></li><li><span style="background-color: rgb(233, 137, 168);"></span></li></ul><div style="clear:both"></div></div></div></div>
+    <div class="button clean">C </div>
+    <div class="button grid_hide">G </div>
+    <div class="button eraser">E </div>
+    <div class="button S">S </div>
+    <div class="button s">s </div>
+    <div class="button add"> +</div>
+    <div class="button reduce"> -</div>
+    <div class="button picker"></div>
+  </div>
+  <div class="pen" style="width: 16px; height: 16px; transform: translate3d(847px, 412px, 0px);"></div>
+
+<script src="./board_files/jquery-2.2.3.min.js" charset="utf-8"></script>
+<script src="./board_files/tinycolor.js" charset="utf-8"></script>
+<script src="./board_files/jquery.colorpickersliders.js" charset="utf-8"></script>
+<script type="text/javascript">
+
+canvas_bg = document.getElementById("canvas_bg")
+ctx_bg = canvas_bg.getContext("2d")
+
+canvas = document.getElementById("canvas")
+ctx = canvas.getContext("2d")
+
+
+basic_width = 2
+basic_height = 2
+timeX = 1
+timeY = 1
+pen_color = null
+
+pixel_width = 8*basic_width
+pixel_height = 8*basic_height
+pen_width = timeX*pixel_width
+pen_height = timeY*pixel_height
+x = null
+y = null
+Hue = 0
+Saturation = 80
+Brightness = 70
+Alpha = 1
+deviation = pixel_width/2
+pressing = false
+eraser = false
+picker = false
+multiple = pen_width/pixel_width -1
+showgrid = true
+
+
+canvas.width = canvas_bg.width = (parseInt(window.innerWidth/pixel_width) - 6)*pixel_width
+canvas.height = canvas_bg.height = (parseInt(window.innerHeight/pixel_height) - 6)*pixel_height
+$("body").css({"width":window.innerWidth + "px","height":window.innerHeight + "px"})
+$("canvas").css({"top":(window.innerHeight - canvas.height)/2 + "px","left":(window.innerWidth - canvas.width)/2 + "px"})
+
+function Press(){
+    if(eraser == false){
+      ctx.fillStyle = pen_color
+      ctx.beginPath()
+      if(pixel_width == pen_width){
+        ctx.rect(x, y, pen_width, pen_height)
+      }else{
+        ctx.rect(x - pixel_width*(timeX - 1), y - pixel_height*(timeY - 1), pen_width, pen_height)
+      }
+      ctx.fill()
+    }
+    if(eraser){
+      if(pixel_width == pen_width){
+        ctx.clearRect(x, y, pen_width, pen_height)
+      }else{
+        ctx.clearRect(x - pixel_width*(timeX - 1), y - pixel_height*(timeY - 1), pen_width, pen_height)
+      }
+    }
+}
+
+function DrawdownY(){
+  ctx.beginPath()
+  ctx.rect(preX - pen_height + pixel_width, preY + pixel_height, pen_width, y - preY)
+  ctx.fill()
+}
+function DrawrightX(){
+
+  ctx.beginPath()
+  ctx.rect(preX + pixel_width, preY - pen_height + pixel_height, x - preX, pen_height)
+  ctx.fill()
+}
+function DrawupY(){
+
+  ctx.beginPath()
+  ctx.rect(preX - pen_height + pixel_width, y - pen_height + pixel_height, pen_width, preY - y)
+  ctx.fill()
+}
+function DrawleftX(){
+
+  ctx.beginPath()
+  ctx.rect(x - pen_width + pixel_width, preY - pen_height + pixel_height, preX - x, pen_height)
+  ctx.fill()
+}
+
+function eDrawdownY(){
+  ctx.clearRect(preX - pen_height + pixel_width, preY + pixel_height, pen_width, y - preY)
+}
+function eDrawrightX(){
+  ctx.clearRect(preX + pixel_width, preY - pen_height + pixel_height, x - preX, pen_height)
+}
+function eDrawupY(){
+  ctx.clearRect(preX - pen_height + pixel_width, y - pen_height + pixel_height, pen_width, preY - y)
+}
+function eDrawleftX(){
+  ctx.clearRect(x - pen_width + pixel_width, preY - pen_height + pixel_height, preX - x, pen_height)
+}
+//pressed
+$("#canvas").mousedown(function (event) {
+  if(event.which !== 3 && event.which !== 2){
+    if(picker){
+      x = event.clientX - $("canvas").css("left").replace("px","")
+      y = event.clientY - $("canvas").css("top").replace("px","")
+      pick()
+      $(".picker").css("border","1px solid rgba(0, 0, 0, 0.2)")
+      $("*").removeClass("cursor")
+      picker = false
+    }else {
+      $(".pen").css("display","block")
+      pressing = true
+      var positionX = event.clientX - $("canvas").css("left").replace("px","")
+      var positionY = event.clientY - $("canvas").css("top").replace("px","")
+      x = parseInt((positionX - deviation)/pixel_width)*pixel_width;
+      y = parseInt((positionY - deviation)/pixel_height)*pixel_height;
+      Press()
+    }
+  }
+})
+//Draw
+$(document).mousemove(function(event){
+  if(pressing && eraser == false){
+     preX = x
+     preY = y
+    var positionX = event.clientX - $("canvas").css("left").replace("px","")
+    var positionY = event.clientY - $("canvas").css("top").replace("px","")
+    x = parseInt((positionX - deviation)/pixel_width)*pixel_width;
+    y = parseInt((positionY - deviation)/pixel_height)*pixel_height;
+    ctx.fillStyle = pen_color
+    if(pixel_width == pen_width){
+      // one pixel scale status
+      if(y != preY || x != preX){
+
+        //when moving too fast-----------x
+        if(Math.abs(x - preX) > pixel_width){
+          ctx.beginPath()
+          //x right
+          if(x > preX){
+            ctx.rect(preX + pixel_width, preY, x - preX - pixel_width, pixel_height)
+          }
+          //x left
+          if(x < preX){
+            ctx.rect(x + pixel_width,preY, preX - x - pixel_width,pixel_height)
+          }
+          ctx.fill()
+        }
+        //when moving too fast,fixed the divisions-----------y
+        if(Math.abs(y - preY) > pixel_height){
+          ctx.beginPath()
+          if(y > preY){
+            ctx.rect(x, preY + pixel_height, pixel_width, y - preY - pixel_height)
+          }
+          if(y < preY){
+            ctx.rect(x, y + pixel_height, pixel_width, preY - y - pixel_height)
+          }
+          ctx.fill()
+        }
+        ctx.beginPath()
+        ctx.rect(x, y, pen_width, pen_height)
+        ctx.fill()
+      }
+    }
+    //when the scale of the pen != the scale of the pixel
+    else if (y > preY && x > preX) {
+
+      ctx.beginPath()
+      ctx.rect(preX - pen_height + pixel_width, preY + pixel_height, pen_width, y - preY)//y
+      ctx.rect(preX + pixel_width, y - pen_height + pixel_height, x - preX, pen_height)//x
+      ctx.fill()
+    }else if (y > preY && x < preX) {
+
+      ctx.beginPath()
+      ctx.rect(preX - pen_height + pixel_width, preY + pixel_height, pen_width, y - preY)//y
+      ctx.rect(x - pen_width + pixel_width, y - pen_height + pixel_height, preX - x, pen_height)//x
+      ctx.fill()
+    }else if (y < preY && x < preX) {
+
+      ctx.beginPath()
+      ctx.rect(preX - pen_height + pixel_width, y - pen_height + pixel_height, pen_width, preY - y)//y
+      ctx.rect(x - pen_width + pixel_width, y - pen_height + pixel_height, preX - x, pen_height)//x
+      ctx.fill()
+    }else if (y < preY && x > preX) {
+
+      ctx.beginPath()
+      ctx.rect(preX - pen_height + pixel_width, y - pen_height + pixel_height, pen_width, preY - y)//y
+      ctx.rect(preX + pixel_width, y - pen_height + pixel_height, x - preX, pen_height)//x
+      ctx.fill()
+    }
+    else{
+
+      if(y > preY){
+        DrawdownY()
+      }
+      if(x > preX){
+        DrawrightX()
+      }
+      if(y < preY){
+        DrawupY()
+      }
+      if(x < preX){
+        DrawleftX()
+      }
+    }
+  }
+
+//eraser---------------
+else if(pressing && eraser){
+  preX = x
+  preY = y
+  var positionX = event.clientX - $("canvas").css("left").replace("px","")
+  var positionY = event.clientY - $("canvas").css("top").replace("px","")
+  x = parseInt((positionX - deviation)/pixel_width)*pixel_width;
+  y = parseInt((positionY - deviation)/pixel_height)*pixel_height;
+if(pixel_width == pen_width){
+  if(y != preY || x != preX){
+
+    //when moving too fast,fixed the divisions-----------x
+    if(Math.abs(x - preX) > pixel_width){
+      //x right
+      if(x > preX){
+        ctx.clearRect(preX + pixel_width, preY, x - preX - pixel_width, pixel_height)
+      }
+      //x left
+      if(x < preX){
+        ctx.clearRect(x + pixel_width,preY, preX - x - pixel_width,pixel_height)
+      }
+    }}
+    //when moving too fast,fixed the divisions-----------y
+    if(Math.abs(y - preY) > pixel_height){
+      if(y > preY){
+        ctx.clearRect(x, preY + pixel_height, pixel_width, y - preY - pixel_height)
+      }
+      if(y < preY){
+        ctx.clearRect(x, y + pixel_height, pixel_width, preY - y - pixel_height)
+      }
+    }
+    ctx.clearRect(x, y, pen_width, pen_height)
+  }
+  else if (y > preY && x > preX) {
+
+    ctx.clearRect(preX - pen_height + pixel_width, preY + pixel_height, pen_width, y - preY)//y
+    ctx.clearRect(preX + pixel_width, y - pen_height + pixel_height, x - preX, pen_height)//x
+  }else if (y > preY && x < preX) {
+
+    ctx.clearRect(preX - pen_height + pixel_width, preY + pixel_height, pen_width, y - preY)//y
+    ctx.clearRect(x - pen_width + pixel_width, y - pen_height + pixel_height, preX - x, pen_height)//x
+  }else if (y < preY && x < preX) {
+
+    ctx.clearRect(preX - pen_height + pixel_width, y - pen_height + pixel_height, pen_width, preY - y)//y
+    ctx.clearRect(x - pen_width + pixel_width, y - pen_height + pixel_height, preX - x, pen_height)//x
+  }else if (y < preY && x > preX) {
+
+    ctx.clearRect(preX - pen_height + pixel_width, y - pen_height + pixel_height, pen_width, preY - y)//y
+    ctx.clearRect(preX + pixel_width, y - pen_height + pixel_height, x - preX, pen_height)//x
+  }
+  else{
+
+        if(y > preY){
+          eDrawdownY()
+        }
+        if(x > preX){
+          eDrawrightX()
+        }
+        if(y < preY){
+          eDrawupY()
+        }
+        if(x < preX){
+          eDrawleftX()
+        }
+      }
+  // ctx.clearRect(x - pen_width + pixel_width, y - pen_height + pixel_height, pen_width, pen_height)
+}
+})
+//MOuseout
+$(document).mouseup(function(){
+  pressing = false
+})
+//pen
+$(document).ready(function(){
+  $(".pen").css({"width":pen_width,"height":pen_height})
+
+})
+$(document).mousemove(function(event){
+   penX = event.clientX
+   penY = event.clientY
+   $(".pen").css("transform","translate3d(" + (penX - pen_width) + "px," + (penY - pen_height) + "px,0)")
+})
+
+//keyboard control
+document.onkeydown=function(event){
+  var e = event || window.event || arguments.callee.caller.arguments[0];
+  //clean
+  if(e && e.keyCode==32){
+     ctx.clearRect(0,0,canvas.width,canvas.height)
+    }
+  //the scale control of the pen
+  if(e && e.keyCode==187){
+     timeX ++
+     timeY ++
+     $(".pen").css("transform","translate3d(" + (penX - pen_width - pixel_width) + "px," + (penY - pen_height - pixel_height) + "px,0)")
+     alsochange()
+    }
+  if(e && e.keyCode==189 && timeX > 1 && timeY > 1){
+     timeX --
+     timeY --
+     $(".pen").css("transform","translate3d(" + (penX - pen_width + pixel_width) + "px," + (penY - pen_height + pixel_height) + "px,0)")
+     alsochange()
+    }
+    //hide background grids
+  if(e && e.keyCode==17){
+    if(showgrid){
+     $("#canvas_bg").css("display","none")
+     $("#canvas").css("background","rgba(255,255,255,1)")
+     showgrid = false
+   }else{
+     $("#canvas_bg").css("display","block")
+     $("#canvas").css("background","rgba(255,255,255,0)")
+     showgrid = true
+   }
+  }
+  //eraser
+  if(e && e.keyCode==16 && eraser == false){
+    eraser = true
+  }
+  //color picker
+
+  if(e && e.keyCode==18 && picker == false){
+    $(".pen").css("display","none")
+    $("*").addClass("cursor")
+
+    picker = true
+  }
+};
+//keyboard up
+document.onkeyup=function(event){
+  var e = event || window.event || arguments.callee.caller.arguments[0];
+    if(e && e.keyCode==16){
+      eraser = false
+    }
+    if(e && e.keyCode==18){
+      picker = false
+      $("*").removeClass("cursor")
+      $(".pen").css("display","block")
+    }
+}
+//color picker
+function pick() {
+  var pixel = ctx.getImageData(x, y, 1, 1);
+  var data = pixel.data;
+  var rgba = 'rgba(' + data[0] + ',' + data[1] +
+             ',' + data[2] + ',' + data[3]/255 + ')';
+  pen_color =  rgba;
+  if(data[3] == 0){
+    pen_color = "rgba(255,255,255,1)"
+  }
+}
+//hide the pen
+$(".tools").hover(function(){
+  $(".pen").css("display","none")
+},function(){
+  if(picker == false){
+    $(".pen").css("display","block")
+  }
+})
+
+function alsochange(){
+  pixel_width = 8*basic_width
+  pixel_height = 8*basic_height
+  pen_width = timeX*pixel_width
+  pen_height = timeY*pixel_height
+  deviation = pixel_width/2
+  multiple = pen_width/pixel_width - 1
+  $(".pen").css({"width":pen_width,"height":pen_height})
+}
+
+//Color
+$(".cie").ColorPickerSliders({
+    flat: true,
+    customswatches: "different-swatches-groupname",
+    swatches: ["rgb(174, 156, 227)", "rgb(29, 179, 229)", "rgb(54, 185, 163)", "rgb(144, 176, 105)", "rgb(224, 148, 110)", "rgb(233, 137, 168)"],
+    order: {
+        cie: 1,
+        preview: 2,
+        opacity: 3
+    },
+    onchange: function(container,color){
+      $(".color-preview").css("background-color", color.tiny.toRgbString())
+      pen_color = $(".color-preview").css("background-color")
+    }
+});
+// $(".cp-preview").css("display","none")
+$("span").html("")
+//background grids
+function Grid(){
+  var gridsX = Math.round(canvas_bg.width/pixel_width)
+  var gridsY = Math.round(canvas_bg.height/pixel_height)
+  ctx_bg.clearRect(0,0,canvas_bg.width,canvas_bg.height)
+  for(var i=1;i<gridsX;i++){
+    ctx_bg.beginPath()
+    ctx_bg.lineWidth = 1
+    ctx_bg.strokeStyle = "rgba(0,0,0,0.05)"
+    ctx_bg.moveTo(i*pixel_width,0)
+    ctx_bg.lineTo(i*pixel_width,canvas_bg.height)
+    ctx_bg.stroke()
+    ctx_bg.closePath()
+  }
+  for(var i=1;i<gridsY;i++){
+    ctx_bg.beginPath()
+    ctx_bg.lineWidth = 1
+    ctx_bg.strokeStyle = "rgba(0,0,0,0.05)"
+    ctx_bg.moveTo(0,i*pixel_height)
+    ctx_bg.lineTo(canvas_bg.width,i*pixel_height)
+    ctx_bg.stroke()
+    ctx_bg.closePath()
+  }
+}
+
+Grid()
+
+//clean
+$(".clean").click(function(){
+  ctx.clearRect(0,0,canvas.width,canvas.height)
+})
+//hide grids
+$(".grid_hide").click(function(){
+  if(showgrid){
+   $("#canvas_bg").css("display","none")
+   $("#canvas").css("background","rgba(255,255,255,1)")
+   showgrid = false
+ }else{
+   $("#canvas_bg").css("display","block")
+   $("#canvas").css("background","rgba(255,255,255,0)")
+   showgrid = true
+ }
+})
+//eraser
+$(".eraser").click(function(){
+  if(eraser){
+  $(".eraser").css("border","1px solid rgba(0, 0, 0, 0.2)")
+   eraser = false
+ }else{
+  $(".eraser").css("border","1px solid rgba(00,100,255,0.5)")
+  eraser = true
+ }
+})
+//change pixel scale
+$(".add").click(function(){
+  if(basic_width < 4){
+    basic_width ++
+    basic_height ++
+  }
+
+  alsochange()
+  Grid()
+  $(".pen").css("transform","translate3d(" + (penX - pen_width + pixel_width) + "px," + (penY - pen_height + pixel_height) + "px,0)")
+})
+$(".reduce").click(function(){
+  if(basic_width > 1){
+    basic_width --
+    basic_height --
+  }
+  alsochange()
+  Grid()
+  $(".pen").css("transform","translate3d(" + (penX - pen_width + pixel_width) + "px," + (penY - pen_height + pixel_height) + "px,0)")
+})
+//change the scale of the pen
+$(".S").click(function(){
+  timeX ++
+  timeY ++
+  $(".pen").css("transform","translate3d(" + (penX - pen_width + pixel_width) + "px," + (penY - pen_height + pixel_height) + "px,0)")
+  alsochange()
+})
+$(".s").click(function(){
+  if(timeX > 1){
+    timeX --
+    timeY --
+    $(".pen").css("transform","translate3d(" + (penX - pen_width + pixel_width) + "px," + (penY - pen_height + pixel_height) + "px,0)")
+    alsochange()
+  }
+})
+//color picker button
+$(".picker").click(function(){
+  if (picker == false) {
+    picker = true
+    $("*").addClass("cursor")
+    $(".picker").css("border","1px solid rgba(00,100,255,0.5)")
+    $(".pen").css("display","none")
+  }
+})
+</script>
+
+</body></html>
